@@ -1,0 +1,31 @@
+.movies {
+    min-height: 83.5vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.movies-button {
+    margin: 50px auto 80px;
+    padding: 0;
+    width: 320px;
+    height: 36px;
+    font-size: 12px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+    background: rgb(255, 255, 255);
+    border-radius: 7px;
+    border: 1px solid rgb(232, 232, 232);
+    cursor: pointer;
+}
+
+.movies-button:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 500px) {
+    .movies-button {
+        width: 240px;
+        margin-top: 61px;
+    }
+}

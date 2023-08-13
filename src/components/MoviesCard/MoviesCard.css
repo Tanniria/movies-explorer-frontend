@@ -1,0 +1,112 @@
+.movie-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.movie-card__image {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 10px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.movie-card__info {
+    margin: 0;
+    padding: 0 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.movie-card__title {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+}
+
+.movie-card__duration {
+    width: 52px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 10px;
+    border-radius: 3px;
+    color: rgb(160, 160, 160);
+    background: rgb(249, 249, 249);
+}
+
+.movie-card__button {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    border: none;
+    opacity: 0;
+}
+
+.movie-card__button:hover {
+    opacity: 1;
+    cursor: pointer;    
+}
+
+.movie-card__button_type_save {
+    width: 72px;
+    height: 21px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 9px;
+    background-color: rgb(249, 249, 249);
+    color: rgb(0, 0, 0);
+}
+
+.movie-card__button_type_saved {
+    width: 21px;
+    height: 21px;
+    background-image: url("../../images/buttonSaved.svg");
+    background-color: transparent;
+    background-size: cover;
+}
+
+.movie-card__button_type_delete {
+    width: 21px;
+    height: 21px;
+    background-image: url("../../images/buttonDelete.svg");
+    background-color: transparent;
+    background-size: cover;
+}
+
+@media screen and (max-width: 768px) {
+    .movie-card__info {
+        padding: 0;
+        margin-top: 25px;
+    }
+
+    .movie-card__duration {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .movie-card__info {
+        margin-top: 14px;
+    }
+}
