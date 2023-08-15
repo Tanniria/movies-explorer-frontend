@@ -22,8 +22,7 @@ export default function AboutMe() {
           <a
             href="https://github.com/Tanniria"
             className="about-me__link"
-            ttarget="_blank"
-            rel="noreferrer">
+            target="blank" >
             Github
           </a>
         </div>

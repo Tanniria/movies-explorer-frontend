@@ -16,40 +16,38 @@ export default function HeaderMovies() {
     };
 
     return (
-        <header className="header__nav-movies">
+        <header className="header-movies">
             <nav className="nav-movies">
-                <Link to='/' className="header__logo">
+                <Link to='/' className="header-movies__logo">
                     <img src={logo} alt="логотип" />
                 </Link>
-                <ul className="nav-movies__links">
+                <ul className="header-movies__links">
                     <li>
                         <NavLink
                             to="/movies"
-                            className="nav-movies__link nav-movies__link-movies"
-                            activeclassname="active"
+                            className={({ isActive }) => `header-movies__link ${isActive ? "header-movies__link_active" : ""}`}
                         > Фильмы
                         </NavLink>
                     </li>
                     <li>
                         <NavLink
                             to="/saved-movies"
-                            className="nav-movies__link nav-movies__link_saved"
-                            activeclassname="active"
+                            className={({ isActive }) => `header-movies__link ${isActive ? "header-movies__link_active" : ""}`}
                         > Сохранённые фильмы
                         </NavLink>
                     </li>
                 </ul>
             </nav>
-            <div className="nav-movies__menu-container">
-                <button className="nav__burger-menu-button"
+            <div className="header-movies__menu-container">
+                <button className="header-movies__burger-menu-button"
                     type="button"
                     onClick={openPopup}
                 ></button>
             </div>
-            <div className="nav__container">
+            <div className="header-movies__nav-container">
                 <Link
                     to="/profile"
-                    className="nav-movies__link nav-movies__link-account"
+                    className="header-movies__link header-movies__link-account"
                 > Аккаунт
                 </Link>
             </div>

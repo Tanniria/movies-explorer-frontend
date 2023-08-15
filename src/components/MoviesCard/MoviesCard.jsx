@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import poster from "../../images/movie-poster.jpg";
 import "./MoviesCard.css";
 
-export default function MoviesCard({ onDelete, trailerLink }) {
+export default function MoviesCard({ onDelete, trailerLink, link, onDeleteMovie }) {
     const [isSaved, setIsSaved] = useState(false);
     const location = useLocation();
 

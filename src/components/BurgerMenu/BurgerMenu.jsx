@@ -25,5 +25,5 @@ export default function BurgerMenu({ onClose, isOpen }) {
         </Link>
       </div>
     </div>
-  )
-}
+  );
+};

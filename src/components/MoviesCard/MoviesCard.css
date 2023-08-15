@@ -58,12 +58,12 @@
     top: 14px;
     right: 14px;
     border: none;
-    opacity: 0;
+    cursor: pointer;
+    opacity: 0.9;
 }
 
 .movie-card__button:hover {
-    opacity: 1;
-    cursor: pointer;    
+    opacity: 0.7;
 }
 
 .movie-card__button_type_save {
@@ -76,6 +76,7 @@
     line-height: 9px;
     background-color: rgb(249, 249, 249);
     color: rgb(0, 0, 0);
+
 }
 
 .movie-card__button_type_saved {
@@ -108,5 +109,9 @@
 @media screen and (max-width: 500px) {
     .movie-card__info {
         margin-top: 14px;
+    }
+    .movie-card__button {
+        top: 11px;
+        right: 11px;
     }
 }

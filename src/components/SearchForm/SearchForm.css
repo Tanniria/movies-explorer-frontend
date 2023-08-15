@@ -15,6 +15,10 @@
     justify-content: flex-start;
 }
 
+.search-form__wrapper:focus-within {
+    outline: 1px solid rgb(43, 224, 128);
+}
+
 .search-form__icon {
     width: 34px;
     height: 34px;
@@ -98,9 +102,17 @@
         padding-left: 19px;
     }
 
+    .search-form__input:focus {
+        outline: 1px solid rgb(43, 224, 128);
+    }
+
     .search-form__button {
         margin-right: 21px;
         position: absolute;
         right: 0;
+    }
+
+    .search-form__wrapper:focus-within {
+        outline: none;
     }
 }

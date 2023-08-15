@@ -8,9 +8,16 @@ export default function MoviesCardList() {
             <ul className="movies-cards__list">
                 <MoviesCard />
                 <MoviesCard />
+                {/* <MoviesCard />
                 <MoviesCard />
                 <MoviesCard />
                 <MoviesCard />
+                <MoviesCard />
+                <MoviesCard />
+                <MoviesCard />
+                <MoviesCard />
+                <MoviesCard />
+                <MoviesCard /> */}
             </ul>
         </section>
     );

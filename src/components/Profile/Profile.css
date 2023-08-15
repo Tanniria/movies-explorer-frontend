@@ -31,7 +31,10 @@
     line-height: normal;
     cursor: pointer;
 }
-
+.profile__label:focus-within {
+    outline: 1px solid rgb(43, 224, 128);
+    border-radius: 5px;
+}
 .profile__input {
     margin: 0;
     padding: 0;
@@ -96,7 +99,7 @@
     }
 
     .profile__title {
-        margin: 67px 0 80px 0;
+        margin: 69px 0 80px 0;
     }
 
     .profile__button {

@@ -105,7 +105,7 @@
 }
 
 .form__input:focus {
-    outline: none;
+    outline: 1px solid rgb(43, 224, 128);
 }
 
 .form__input-error {
