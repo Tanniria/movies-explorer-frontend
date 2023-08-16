@@ -1,0 +1,143 @@
+.about-project {
+    padding: 110px 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-project__title {
+    margin: 0;
+    padding: 0 0 24px 0;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.88px;
+    border-bottom: 1px solid #000;
+}
+
+.about-project__container {
+    margin: 0;
+    padding: 70px 0 110px 0;
+    display: flex;
+    gap: 40px;
+    list-style-type: none;
+}
+
+.about-project__info {
+    display: flex;
+    flex-direction: column;
+    max-width: 550px;
+    gap: 26px 0;
+}
+
+.about-project__info-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: -0.8px;
+}
+
+.about-project__info-text {
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.about-project__diplom {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 14px 0;
+}
+
+.about-project__diplom-title {
+    margin: 0;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    background-color: rgb(242, 242, 242);
+}
+
+.about-project__diplom-title_black {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+.about-project__diplom-info {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 17px;
+    text-align: center;
+    color: rgb(160, 160, 160);
+}
+
+@media screen and (max-width: 768px) {
+    .about-project {
+        padding: 90px 50px;
+    }
+
+    .about-project__container {
+        padding-bottom: 93px;
+        gap: 30px;
+    }
+
+    .about-project__info {
+        gap: 22px;
+    }
+
+    .about-project__info-text {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .about-project__diplom {
+        grid-template-columns: 1.06fr 4fr;
+    }
+}
+@media screen and (max-width: 500px) {
+    .about-project {
+        padding: 70px 18px;
+    }
+    .about-project__title {
+        padding-bottom: 28px;
+        font-size: 18px;
+        letter-spacing: -0.72px;
+    }
+    .about-project__container {
+        padding: 60px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 56px;
+    }
+    .about-project__info {
+        gap: 19px;
+    }
+    .about-project__info-title {
+        font-size: 18px;
+        letter-spacing: -0.72px;
+    }
+    .about-project__info-text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .about-project__diplom {
+        gap: 6px 0;
+        grid-template-columns: 2.2fr 4fr;
+    }
+    .about-project__diplom-title {
+        font-size: 11px;
+    }
+    .about-project__diplom-info {
+        font-size: 11px;
+    }
+}
