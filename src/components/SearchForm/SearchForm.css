@@ -33,12 +33,14 @@
     font-weight: 400;
     font-style: normal;
     line-height: 20px;
-    color: rgb(160, 160, 160);
+    color: rgb(0, 0, 0);
     background: rgb(249, 249, 249);
     border: none;
     outline: none;
 }
-
+.search-form__input::placeholder {
+    color: rgb(160, 160, 160);
+}
 .search-form__button {
     max-height: 34px;
     padding: 8px 10.35px;

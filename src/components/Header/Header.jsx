@@ -4,7 +4,7 @@ import Navigation from "../Navigation/Navigation";
 import logo from "../../images/logo.svg";
 import "./Header.css";
 
-export default function Header({ isLoggedIn }) {
+export default function Header() {
   return (
     <header className="header">
       <Link to="/" className="header__logo">

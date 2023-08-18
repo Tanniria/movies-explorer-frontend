@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from "../Form/Form";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "../Form/Form.css";
 
-export default function Register({ onRegister }) {
-    const [registrationUserInfo, setRegistrationUserInfo] = useState({
-        name: '',
-        email: '',
-        password: '',
-    });
+export default function Register({ onRegister, isLoading }) {
+    const { values, handleChange, errors, isValid } = useFormAndValidation();
 
-    function handleChange(evt) {
-        const { value, name } = evt.target;
-        setRegistrationUserInfo({ ...registrationUserInfo, [name]: value })
-    };
     function handleSubmit(evt) {
         evt.preventDefault();
-        onRegister(registrationUserInfo)
+        onRegister({
+            name: values.name,
+            email: values.email,
+            password: values.password,
+        });
     }
 
     return (
@@ -27,12 +24,14 @@ export default function Register({ onRegister }) {
                     linkText="Уже зарегистрированы?"
                     link="Войти"
                     route="/signin"
+                    isDisabled={!isValid}
+                    isLoading={isLoading}
                     onSubmit={handleSubmit}
                 >
                     <label className="form__wrapper">
                         Имя
                         <input
-                            className="form__input"
+                            className={`form__input ${!isValid && "form__input_type_error"}`}
                             name="name"
                             type="text"
                             placeholder="Ваше имя"
@@ -40,27 +39,27 @@ export default function Register({ onRegister }) {
                             maxLength="40"
                             required
                             onChange={handleChange}
-                            value={registrationUserInfo.name}
+                            value={values.name || ''}
                         />
-                        <span className="form__input-error"></span>
+                        <span className="form__input-error">{errors.name || ''}</span>
                     </label>
                     <label className="form__wrapper">
                         E-mail
                         <input
-                            className="form__input"
+                            className={`form__input ${!isValid && "form__input_type_error"}`}
                             name="email"
                             type="email"
                             placeholder="Ваш e-mail"
                             required
                             onChange={handleChange}
-                            value={registrationUserInfo.email}
+                            value={values.email || ''}
                         />
-                        <span className="form__input-error"></span>
+                        <span className="form__input-error">{errors.email || ''}</span>
                     </label>
                     <label className="form__wrapper">
                         Пароль
                         <input
-                            className="form__input"
+                            className={`form__input ${!isValid && "form__input_type_error"}`}
                             name="password"
                             type="password"
                             placeholder="Введите пароль"
@@ -68,9 +67,9 @@ export default function Register({ onRegister }) {
                             maxLength="40"
                             required
                             onChange={handleChange}
-                            value={registrationUserInfo.password}
+                            value={values.password || ''}
                         />
-                        <span className="form__input-error"></span>
+                        <span className="form__input-error">{errors.password || ''}</span>
                     </label>
                 </Form>
             </section>

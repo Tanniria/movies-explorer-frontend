@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import "./Form.css";
 
-export default function Form({ title, children, buttonText, linkText, route, link }) {
+export default function Form({ title, children, buttonText, linkText, route, link, isDisabled, isLoading }) {
     return (
         <div className="form">
             <Link to="/" className="form__logo">
@@ -14,7 +14,12 @@ export default function Form({ title, children, buttonText, linkText, route, lin
                 {children}
                 <button
                     type="submit"
-                    className="form__submit-button">
+                    isDisabled={isDisabled ? true : false}
+                    className={
+                        isDisabled || isLoading
+                            ? 'form__submit-button form__submit-button_inactive'
+                            : 'form__submit-button'
+                    } >
                     {buttonText}
                 </button>
             </form>
