@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import * as api from '../../utils/MainApi';
+import { getUserInfo, login, register } from '../../utils/Auth';
 
 import Login from "../Login/Login";
 import Register from "../Register/Register";
@@ -11,139 +11,143 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
-import { RES_ERRORS, ERRORS } from '../../utils/constants';
-
+import useResize from "../../hooks/useResize";
 import "./App.css";
 
 export default function App() {
-    const navigate = useNavigate();
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const width = useResize();
 
-    const [currentUser, setCurrentUser] = useState({});
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [savedMovies, setSavedMovies] = useState([]);
-    const [error, setError] = useState('');
+  // const [currentUser, setCurrentUser] = useState({});
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isTokenChecked, setIsTokenChecked] = useState(false);
+  // const [savedMovies, setSavedMovies] = useState([]);
+  // const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
+  const [isTokenChecked, setIsTokenChecked] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoggedIn) handleTokenCheck();
+  }, [isLoggedIn]);
 
-
-    function handleRegistration({ name, email, password }) {
-        api
-            .register({ name, email, password })
-            .then(() => {
-                handleLogin({ email, password });
-            })
-            .catch((err) => {
-                if (err === 'Ошибка: 500') {
-                    console.log(err)
-                    setError('Ошибка на сервере');
-                }
-                if (err === 'Ошибка: 409') {
-                    console.log(err);
-                    setError('Пользователь с такой почтой уже существует');
-                } else {
-                    setError('Переданы некорректные данные пользователя');
-                }
-            })
-            .finally(() => {
-                setTimeout(() => setError(''), 3000);
-            });
-    };
-
-    //авторизация пользователя
-    function handleLogin(email, password) {
-        api
-            .login(email, password)
-            .then((res) => {
-                localStorage.setItem("jwt", res.token);
-                setIsLoggedIn(true);
-                navigate("/", { replace: true })
-            })
-            .catch((err) => {
-                if (err === 'Ошибка: 401') {
-                    console.log(err)
-                    setError('Неправильно введен email или пароль');
-                } else if (err) {
-                    setError('Что-то пошло не так');
-                } else {
-                    setError('');
-                }
-            })
-            .finally(() => {
-                setTimeout(() => setError(''), 3000);
-            });
+  const handleTokenCheck = () => {
+    const jwt = localStorage.getItem('jwt');
+    if (!jwt) {
+      setIsTokenChecked(true);
+      return;
     }
-    // const handleUpdateUser = (data) => {
-    //     setIsEditUserInfoStatus(true);
-    //     const jwt = localStorage.getItem('jwt');
-    //     api
-    //         .editUserInfo(data, jwt)
-    //         .then(() => {
-    //             setCurrentUser(data);
-    //             setIsEditUserInfoStatus(RES_ERRORS.UPDATE_SUCCESS);
-    //             setTimeout(() => setIsEditUserInfoStatus(''), 2500);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //             if (err === 'Ошибка: 409') {
-    //                 setIsEditUserInfoStatus(RES_ERRORS.UPDATE_PROFILE);
-    //             } else {
-    //                 setIsEditUserInfoStatus(RES_ERRORS.UPDATE_DEFAULT_400);
-    //             }
-    //         })
-    // };
+  };
+  const handleRegistration = ({ name, email, password }) => {
+    register({ name, email, password })
+      .then(() => {
+        handleAuthorization({ email, password });
+      })
+      .catch((err) => console.log(err, 'err'))
+      .finally(() => {
+        setTimeout(() => console.log(''), 3000);
+      });
+  };
 
-    function handleCardDelete(card) {
-        api
-            .deleteCard(card._id)
-            .then(() => {
-                setSavedMovies((state) => state.filter((item) => item._id !== card._id));
-            })
-            .catch((err) => {
-                console.log(err);
-                handleLogin(err);
-            });
-    }
+  const handleAuthorization = ({ email, password }) => {
+    login({ email, password })
+      .then((res) => {
+        if (res.token) {
+          setIsLoggedIn(true);
+          localStorage.setItem('jwt', res.token); // токен хранится в localstorage
+          handleTokenCheck();
+          navigate('/movies'); // автоматическая переадресация на страницу movies
+        }
+        Promise.all([getUserInfo]).then(([userInfo, userMovies]) => {
+          console.log(userInfo);
+          //    console.log(userMovies);
+          setCurrentUser(userInfo); // данные записываются в глобальную стейт-переменную
+          //    localStorage.setItem('movies', JSON.stringify(userMovies));
+          //    setAllMovies(JSON.parse(localStorage.getItem('movies')));
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoggedIn(false);
+        localStorage.removeItem('jwt');
+        setCurrentUser(null);
+      });
+  };
+  // function onSignOut() {
+  //     localStorage.clear(); 
+  //     setIsLoggedIn(false);
+  //     // handleTokenCheck(null);
+  //     // setIsLoading(false);
+  //     // setListFoundMovies([]);
+  //     // setSavedMovies([]);
+  //     // setFoundMoviesList(false);
+  //     // setShortMovieCheckbox(false);
+  //     // setSearchKeyword('');
+  //     // setFoundMoviesList([]);
+  //     // setCurrentUser({});
+  //     // setIsTokenChecked(false);
+  //     // setIsNotFoundSaved(false);
+  //     // setIsNotFound(false);
+  //     // переадресация на главную страницу
+  //     navigate('/');
+  // }
+  return (
+    // <CurrentUserContext.Provider value={currentUser}>
+    //   <div className="page">
+    //     <Routes>
+    //       <Route
+    //         path='/'
+    //         element={<Main isLoggedIn={isLoggedIn} />}
+    //       />
+    //       <Route
+    //         path="/movies"
+    //         element={<Movies  />}
+    //       />
+    //       {/* <Route
+    //                     path="/movies"
+    //                     element={
+    //                         <ProtectedRouteElement
+    //                             element={Movies}
+    //                             isLoggedIn={isLoggedIn}
+    //                             savedMovies={savedMovies}
 
-    return (
-        <CurrentUserContext.Provider value={currentUser}>
-            <div className="page">
-                <Routes>
-                    <Route
-                        path='/'
-                        element={<Main isLoggedIn={isLoggedIn} />}
-                    />
-                    <Route
-                        path="/movies"
-                        element={<Movies />}
-                    />
-                    {/* <Route
-                        path="/movies"
-                        element={
-                            <ProtectedRouteElement
-                                element={Movies}
-                                isLoggedIn={isLoggedIn}
-                                savedMovies={savedMovies}
-
-                            />}
-                    /> */}
-                    <Route
-                        path="/saved-movies"
-                        element={<SavedMovies isLoggedIn={isLoggedIn} />}
-                    />
-                    <Route
-                        path="/profile"
-                        element={<Profile isLoggedIn={isLoggedIn} />}
-                    />
-                    <Route
-                        path='/signup'
-                        element={<Register isLoggedIn={isLoggedIn} />}
-                    />
-                    <Route
-                        path='/signin'
-                        element={<Login isLoggedIn={isLoggedIn} />}
-                    />
-                    <Route path='*' element={<PageNotFound />}></Route>
-                </Routes>
-            </div>
-        </CurrentUserContext.Provider>
-    )
+    //                         />}
+    //                 /> */}
+    //       <Route
+    //         path="/saved-movies"
+    //         element={<SavedMovies isLoggedIn={isLoggedIn} />}
+    //       />
+    //       <Route
+    //         path="/profile"
+    //         element={<Profile isLoggedIn={isLoggedIn}  />}
+    //       />
+    //       <Route
+    //         path="/signup"
+    //         element={<Register isLoggedIn={isLoggedIn} onRegister={handleRegistration} />}
+    //       />
+    //       <Route
+    //         path='/signin'
+    //         element={<Login isLoggedIn={isLoggedIn} onLogin={handleAuthorization}/>}
+    //       />
+    //       <Route path='*' element={<PageNotFound />}></Route>
+    //     </Routes>
+    //   </div>
+    // </CurrentUserContext.Provider>
+    <div className="page">
+      <Routes>
+        <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/saved-movies" element={<SavedMovies isLoggedIn={isLoggedIn} />} />
+        <Route path="/profile" element={<Profile isLoggedIn={isLoggedIn} />} />
+        <Route
+          path="/signup"
+          element={<Register isLoggedIn={isLoggedIn} onRegister={handleRegistration} />}
+        />
+        <Route path="/signin" element={<Login isLoggedIn={isLoggedIn} />} />
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes>
+    </div>
+  )
 }

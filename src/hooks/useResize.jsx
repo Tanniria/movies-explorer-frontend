@@ -1,27 +1,39 @@
-import { useState, useEffect } from 'react';
-import {
-  SCREEN_SM, SCREEN_MD, SCREEN_LG, SCREEN_XL, SCREEN_XXL,
-} from '../utils/screenBreakpoints';
+// import { useState, useEffect } from "react";
 
-export const useResize = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+// export default function useResize() {
+//   const [width, setWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const handleResize = (event) => {
-      setWidth(event.target.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
+//   useEffect(() => {
+//     function handleResize(evt) {
+//       setWidth(evt.window.innerWidth);
+//     };
+//     window.addEventListener('resize', handleResize);
+
+//     return () => {
+//       window.removeEventListener('resize', handleResize)
+//     }
+//   }, []);
+
+//   return width
+// }
+
+import { useState, useEffect } from "react";
+
+export default function useResize() {
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        function handleResize() {
+        setWidth(window.innerWidth
+        )    
+    }
+    handleResize()
+
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      window.removeEventListener('resize', handleResize)
+    }
   }, []);
-
-  return {
-    width,
-    isScreenSm: width >= SCREEN_SM,
-    isScreenMd: width >= SCREEN_MD,
-    isScreenLg: width >= SCREEN_LG,
-    isScreenXl: width >= SCREEN_XL,
-    isScreenXxl: width >= SCREEN_XXL,
-  };
-};
+  
+  return width
+}

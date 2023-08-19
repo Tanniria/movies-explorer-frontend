@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Header from "../Header/Header";
 import HeaderMovies from "../Header/HeaderMovies/HeaderMovies";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 import "./Movies.css";
 
-export default function Movies({onClick, handleLikeClick, savedMovies, onCardDelete}) {
+export default function Movies({onClick, handleLikeClick, savedMovies, onCardDelete, isLoggedIn}) {
   function handleMore() {
     onClick()
   }

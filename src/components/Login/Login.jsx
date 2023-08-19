@@ -1,18 +1,25 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 import Form from "../Form/Form";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "../Form/Form.css";
 
-export default function Login({ onLogin, isLoading }) {
-    const { values, handleChange, errors, isValid } = useFormAndValidation();
+export default function Login({ onLogin, isLoading, isLoggedIn }) {
+    const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation();
 
     function handleSubmit(evt) {
         evt.preventDefault();
+        if (!values.email || !values.password) {
+            return
+        }
         onLogin({
-          email: values.email,
-          password: values.password,
+            email: values.email,
+            password: values.password,
         });
-      }
+        resetForm();
+    }
+
+    if (isLoggedIn) return (<Navigate to='/' replace />)
 
     return (
         <main>
