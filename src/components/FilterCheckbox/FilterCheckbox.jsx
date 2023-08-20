@@ -10,7 +10,7 @@ export default function FilterCheckbox({ onCheckbox, checked}) {
                 name="checkbox"
                 type="checkbox"
                 onChange={onCheckbox}
-                checked={checked}/>
+                checked={checked} />
             <p className="filter-checkbox__text">Короткометражки</p>
         </div>
     </div>

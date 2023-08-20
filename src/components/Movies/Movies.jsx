@@ -18,7 +18,7 @@ import {
 } from "../../utils/constants";
 import "./Movies.css";
 
-export default function Movies({ movies, isLoggedIn, onSubmit, isLoadind, onCheckbox, checked, checkMovieLike, savedMovies, onLike, onDelete }) {
+export default function Movies({ movies, isLoggedIn, onSubmit, isLoadind, onCheckbox, checked, checkMovieLike, savedMovies, onLike, onDelete,  isNotFound, isServerError }) {
 
   const width = useResize();
   const [numberAddMovies, setNumberAddMovies] = useState(''); // число добавляемых карточек, при нажатии на кнопку ещё
@@ -64,6 +64,8 @@ export default function Movies({ movies, isLoggedIn, onSubmit, isLoadind, onChec
             checkMovieLike={checkMovieLike}
             savedMovies={savedMovies}
             isMoviesPage={true}
+            isNotFound={isNotFound}
+            isServerError={isServerError}
           />
         )}
         <button className={

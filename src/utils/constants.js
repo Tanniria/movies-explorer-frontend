@@ -9,7 +9,9 @@ export function checkResponse(res) {
     }
     return Promise.reject(`Ошибка: ${res.status}`);
 };
-
+export const NOT_FOUND_ERROR = 'Ничего не найдено';
+export const DEFAULT_ERROR = 'Во время запроса произошла ошибка. Подождите немного и попробуйте ещё раз'
+ 
 export const NUMBER_CARDS_12 = 12;
 export const NUMBER_CARDS_8 = 8;
 export const NUMBER_CARDS_6 = 6;

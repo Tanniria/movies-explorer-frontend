@@ -43,6 +43,7 @@ export default function App() {
   const [keyWord, setKeyWord] = useState('');
   const [isShortMoviesSaved, setIsShortMoviesSaved] = useState(false);
 
+  const [checkbox, setCheckbox] = useState(false)
   // Авторизация, регистрация, проверка токена, изменение профиля
   useEffect(() => {
     if (!isLoggedIn) handleTokenCheck();
@@ -434,6 +435,7 @@ export default function App() {
               isNotFound={isNotFound}
               savedMovies={isSavedMovies}
               onLike={handleLike}
+              onCheckbox={handleChangeCheckbox}
               checkMovieLike={checkMovieLike}
               onDelete={handleDelete}
               onSubmit={handleRequestMovies}

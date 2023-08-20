@@ -4,6 +4,20 @@
     padding-top: 79px;
 }
 
+.movies-cards__errors {
+    display: none;
+}
+
+.movies-cards__errors_active {
+    margin: 50px auto;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+    color: #FF4062;
+}
+
 .movies-cards__list {
     margin: 0;
     padding: 0 0 16px 0;
