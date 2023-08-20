@@ -56,6 +56,31 @@
     border-bottom: 1px solid rgb(232, 232, 232);
 }
 
+.profile__input-error {
+    min-height: 12px;
+    display: block;
+    padding-top: 10px;
+    font-size: 10px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: normal;
+    color: rgb(255, 64, 98);
+}
+
+.profile__input-error:focus {
+    border-bottom-color: rgb(255, 64, 98);
+    outline: 1px solid rgb(255, 64, 98);
+}
+
+.profile__save {
+    height: 20px;
+    margin: 30px auto;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: rgb(255, 64, 98);
+}
+
 .profile__button {
     border: none;
     font-size: 13px;
@@ -70,7 +95,7 @@
 }
 
 .profile__button_edit {
-    margin: 220px 0 16px 0;
+    margin: 170px 0 16px 0;
     padding: 0;
     font-weight: 400;
 }
@@ -107,7 +132,7 @@
     background: #ffffff;
     border: 1px solid #000000;
     box-sizing: border-box;
-    color: #000000;
+    color: #424141;
     opacity: 0.2;
 }
 
@@ -145,6 +170,7 @@
     .profile__button_signout {
         margin-bottom: 40px;
     }
+
     .profile__submit-button {
         font-size: 12px;
     }

@@ -10,9 +10,6 @@ export function checkResponse(res) {
     return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-export const routesWithHeader = ['/', '/movies', '/saved-movies', '/profile'];
-export const routesWithFooter = ['/', '/movies', '/saved-movies'];
-
 export const NUMBER_CARDS_12 = 12;
 export const NUMBER_CARDS_8 = 8;
 export const NUMBER_CARDS_6 = 6;

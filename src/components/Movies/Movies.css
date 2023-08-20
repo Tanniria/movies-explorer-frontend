@@ -23,6 +23,10 @@
     opacity: 0.8;
 }
 
+.movies-button_hidden {
+    visibility: hidden;
+}
+
 @media screen and (max-width: 500px) {
     .movies-button {
         width: 240px;

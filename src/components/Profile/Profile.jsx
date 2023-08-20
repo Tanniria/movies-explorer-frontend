@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import HeaderMovies from "../Header/HeaderMovies/HeaderMovies";
-import "./Profile.css";
-import "../Form/Form.css";
 import useFormAndValidation from '../../hooks/useFormAndValidation';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import "./Profile.css";
 
-export default function Profile({ onSignOut, disabled, onUpdateUser }) {
-  const navigate = useNavigate();
-
+export default function Profile({ signOut, onEditUser, isEditProfile, disabled }) {
   const { values, handleChange, errors, isValid, setValues, resetForm } = useFormAndValidation();
-  const currentUser = useContext(CurrentUserContext);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [editProfile, setEditProfile] = useState(false);
 
-  const buttonClassName = `${disabled ? 'profile__submit-button profile__submit-button_inactive' : 'profile__submit-button'}`
-  const disableButton = (!isValid || (currentUser.name === values.name && currentUser.email === values.email));
+  const currentUser = useContext(CurrentUserContext);
+  const [isEditSuccess, setIsEditSuccess] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const buttonClassName = `${disabled ? 'profile__submit-button profile__submit-button_inactive' : 'profile__submit-button profile__submit-button:hover'}`
+  const inactiveButton = (!isValid || (currentUser.name === values.name && currentUser.email === values.email));
 
   useEffect(() => {
     setIsDisabled(false);
@@ -28,7 +24,7 @@ export default function Profile({ onSignOut, disabled, onUpdateUser }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     if (isValid) {
-      onUpdateUser({
+      onEditUser({
         name: values.name,
         email: values.email,
       });
@@ -36,20 +32,20 @@ export default function Profile({ onSignOut, disabled, onUpdateUser }) {
     }
   }
 
-  function handleEditProfile() {
+  function handleUpdateUser() {
     setIsDisabled(true);
-  }
+  };
 
-  function handleSave() {
-    setEditProfile(true);
-  }
+  function handleSaveProfile() {
+    setIsEditSuccess(true);
+  };
 
   return (
     <>
       <HeaderMovies />
       <main>
         <section className="profile">
-          <h3 className="profile__title">Привет, Виталий!</h3>
+          <h3 className="profile__title">Привет, {currentUser.name}!</h3>
           <form className="profile__form" onSubmit={handleSubmit}>
             <label className="profile__label">Имя
               <input
@@ -60,6 +56,7 @@ export default function Profile({ onSignOut, disabled, onUpdateUser }) {
                 minLength="2"
                 maxLength="30"
                 required
+                value={values?.name ?? currentUser.name}
                 disabled={isDisabled ? false : true}
                 onChange={handleChange}
               />
@@ -72,36 +69,40 @@ export default function Profile({ onSignOut, disabled, onUpdateUser }) {
                 type="email"
                 placeholder="E-mail"
                 required
+                value={values?.email ?? currentUser.email}
                 disabled={isDisabled ? false : true}
                 onChange={handleChange}
               />
             </label>
+            <span className="profile__input-error">{errors.email || ''}</span>
+            {isEditSuccess && (
+              <p className="profile__save">{isEditProfile}</p>
+            )}
             {!isDisabled ? (
               <>
                 <button
+                  to="/"
                   className="profile__button profile__button_edit"
                   type="button"
-                  onClick={handleEditProfile}
-                >Редактировать
+                  onClick={handleUpdateUser} >
+                  Редактировать
                 </button>
                 <button
                   className="profile__button profile__button_signout"
                   type="button"
-                  // onClick={() => navigate("/")}
-                  onClick={onSignOut}
-                >Выйти из аккаунта
+                  onClick={signOut} >
+                  Выйти из аккаунта
                 </button>
               </>
             ) : (
               <button
                 className={buttonClassName}
                 type="submit"
-                disabled={disableButton}
-                onClick={handleSave}
-              >Сохранить
+                disabled={inactiveButton}
+                onClick={handleSaveProfile} >
+                Сохранить
               </button>
-            )
-            }
+            )}
           </form>
         </section>
       </main>
