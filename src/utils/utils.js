@@ -1,23 +1,22 @@
-import { SHORT_MOVIES } from '../utils/constants';
-
-export default function movieDuration(duration) {
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-    return `${hours}ч${minutes}м`;
+function declOfNum(number, titles) {
+    const cases = [2, 0, 1, 1, 1, 2];
+    return titles[
+        number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]
+    ];
 }
 
-export const searchMovies = (movies, keyword, checkbox) => {
-    const moviesSearchКeyword = movies.filter((movie) => {
-        return movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) || movie.nameEN.toLowerCase().includes(keyword.toLowerCase())
-    })
-    if (checkbox) {
-        return filterShortMovies(moviesSearchКeyword);
+export const timeConverter = (num) => {
+    const minutes = num % 60;
+    const hours = (num - minutes) / 60;
+    if (hours === 0) {
+        return `${minutes} ${declOfNum(minutes, ['минута', 'минуты', 'минут'])}`;
+    } else if (minutes === 0) {
+        return `${hours} ${declOfNum(hours, ['час', 'часа', 'часов'])}`;
     } else {
-        return moviesSearchКeyword;
+        return `${hours} ${declOfNum(hours, ['час', 'часа', 'часов'])} ${minutes} ${declOfNum(minutes, [
+            'минута',
+            'минуты',
+            'минут',
+        ])}`;
     }
-};
-
-// фильтрация по длительности фильма
-export const filterShortMovies = (movies) => {
-    return movies.filter((movie) => movie.duration <= SHORT_MOVIES);
 };

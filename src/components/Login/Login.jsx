@@ -1,68 +1,75 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Form from "../Form/Form";
-import useFormAndValidation from "../../hooks/useFormAndValidation";
 import "../Form/Form.css";
 
-export default function Login({ onLogin, isLoading, isLoggedIn }) {
-    const { values, handleChange, errors, isValid, resetForm } = useFormAndValidation();
+export default function Login({ onLogin, errorMessage }) {
+  const navigate = useNavigate();
+  const { user } = useContext(CurrentUserContext);
 
-    function handleSubmit(evt) {
-        evt.preventDefault();
-        if (!values.email || !values.password) {
-            return
-        }
-        onLogin({
-            email: values.email,
-            password: values.password,
-        });
-        resetForm();
-    }
+  useEffect(() => {
+    if (user.isAuth) navigate('/');
+  }, [user]);
 
-    if (isLoggedIn) return (<Navigate to='/' replace />)
+  const [loginUserInfo, setLoginUserInfo] = useState({
+    email: '',
+    password: '',
+  });
 
-    return (
-        <main>
-            <section className="login">
-                <Form
-                    title="Рады видеть!"
-                    buttonText="Войти"
-                    linkText="Еще не зарегистрированы?"
-                    link="Регистрация"
-                    route="/signup"
-                    isDisabled={!isValid}
-                    isLoading={isLoading}
-                    onSubmit={handleSubmit}>
-                    <label className="form__wrapper">
-                        E-mail
-                        <input
-                            className={`form__input ${!isValid && "form__input_type_error"}`}
-                            name="email"
-                            type="email"
-                            placeholder="Ваш e-mail"
-                            required
-                            onChange={handleChange}
-                            value={values.email || ''}
-                        />
-                        <span className="form__input-error">{errors.email || ''}</span>
-                    </label>
-                    <label className="form__wrapper">
-                        Пароль
-                        <input
-                            className={`form__input ${!isValid && "form__input_type_error"}`}
-                            name="password"
-                            type="password"
-                            placeholder="Введите пароль"
-                            minLength="8"
-                            maxLength="40"
-                            required
-                            onChange={handleChange}
-                            value={values.password || ''}
-                        />
-                        <span className="form__input-error">{errors.password || ''}</span>
-                    </label>
-                </Form>
-            </section>
-        </main>
-    );
-};
+  function handleChange(evt) {
+    const { value, name } = evt.target;
+    setLoginUserInfo((values) => ({ ...values, [name]: value }));
+  }
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onLogin({
+      email: loginUserInfo.email,
+      password: loginUserInfo.password,
+    });
+  }
+  return (
+    <main>
+      <section className="login">
+        <Form
+          title="Рады видеть!"
+          buttonText="Войти"
+          linkText="Еще не зарегистрированы?"
+          link="Регистрация"
+          route="/signup"
+          onSubmit={handleSubmit}
+        >
+          <label className="form__wrapper">
+            E-mail
+            <input
+              className="form__input"
+              name="email"
+              type="email"
+              placeholder="Ваш e-mail"
+              required
+              onChange={handleChange}
+              value={loginUserInfo.email || ''}
+            />
+            <span className="form__input-error"></span>
+          </label>
+          <label className="form__wrapper">
+            Пароль
+            <input
+              className="form__input"
+              name="password"
+              type="password"
+              placeholder="Введите пароль"
+              minLength="8"
+              maxLength="40"
+              required
+              onChange={handleChange}
+              value={loginUserInfo.password || ''}
+            />
+            <span className="form__input-error">{errorMessage}</span>
+          </label>
+        </Form>
+      </section>
+    </main>
+  );
+}

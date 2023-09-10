@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import Header from "../Header/Header";
 import HeaderMovies from "../Header/HeaderMovies/HeaderMovies";
 import Promo from "../Promo/Promo";
@@ -9,9 +10,10 @@ import Portfolio from "../Portfolio/Portfolio";
 import Footer from "../Footer/Footer";
 
 export default function Main({ isLoggedIn }) {
+  const {user} = useContext(CurrentUserContext);
   return (
     <>
-      {isLoggedIn ? (<HeaderMovies />) : (<Header />)}
+      {user.isAuth ? <HeaderMovies /> : <Header />}
       <main className='main'>
         <Promo />
         <AboutProject />
