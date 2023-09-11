@@ -1,6 +1,5 @@
 import {useCallback, useState} from 'react';
 import {isEmail} from 'validator';
-
 export const useFormValidation = () => {
 	const [values, setValues] = useState({});
 	const [errors, setErrors] = useState({});
@@ -16,6 +15,11 @@ export const useFormValidation = () => {
 		}
 		if (name === 'name') {
 			const nameError = value.length < 2 || value.length > 30 ? 'Имя должно содержать не меньше 2 и не больше 30 символов' : '';
+			evt.target.setCustomValidity(nameError);
+			setErrors({...errors, [name]: nameError});
+		}
+		if (name === 'password') {
+			const nameError = value.length < 8 ? 'Пароль должен содержать больше 8 символов' : '';
 			evt.target.setCustomValidity(nameError);
 			setErrors({...errors, [name]: nameError});
 		} else {

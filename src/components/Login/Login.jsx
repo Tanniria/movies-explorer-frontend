@@ -1,32 +1,22 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {CurrentUserContext} from '../../contexts/CurrentUserContext';
+import React, {useEffect} from 'react';
+import {useFormValidation} from '../../hooks/useValidation';
 import Form from '../Form/Form';
 import '../Form/Form.css';
 
-export default function Login({onLogin, errorMessage}) {
-	const navigate = useNavigate();
-	const {user} = useContext(CurrentUserContext);
-
+export default function Login({onLogin, errorMessage, isSendRequest}) {
+	const {values, handleChange, errors, isValid, setValues} = useFormValidation();
 	useEffect(() => {
-		if (user.isAuth) navigate('/');
-	}, [user]);
-
-	const [loginUserInfo, setLoginUserInfo] = useState({
-		email: '',
-		password: '',
-	});
-
-	function handleChange(evt) {
-		const {value, name} = evt.target;
-		setLoginUserInfo((values) => ({...values, [name]: value}));
-	}
+		setValues({
+			email: '',
+			password: '',
+		});
+	}, [setValues]);
 
 	function handleSubmit(evt) {
 		evt.preventDefault();
 		onLogin({
-			email: loginUserInfo.email,
-			password: loginUserInfo.password,
+			email: values.email,
+			password: values.password,
 		});
 	}
 	return (
@@ -38,7 +28,10 @@ export default function Login({onLogin, errorMessage}) {
 					linkText='Еще не зарегистрированы?'
 					link='Регистрация'
 					route='/signup'
-					onSubmit={handleSubmit}>
+					onSubmit={handleSubmit}
+					isValid={isValid}
+					errorMessage={errorMessage}
+					isSendRequest={isSendRequest}>
 					<label className='form__wrapper'>
 						E-mail
 						<input
@@ -47,10 +40,10 @@ export default function Login({onLogin, errorMessage}) {
 							type='email'
 							placeholder='Ваш e-mail'
 							required
-							onChange={handleChange}
-							value={loginUserInfo.email || ''}
+							onChange={(e) => handleChange(e)}
+							value={values.email || ''}
 						/>
-						<span className='form__input-error'></span>
+						<span className='form__input-error'>{errors.email}</span>
 					</label>
 					<label className='form__wrapper'>
 						Пароль
@@ -62,10 +55,10 @@ export default function Login({onLogin, errorMessage}) {
 							minLength='8'
 							maxLength='40'
 							required
-							onChange={handleChange}
-							value={loginUserInfo.password || ''}
+							onChange={(e) => handleChange(e)}
+							value={values.password || ''}
 						/>
-						<span className='form__input-error'>{errorMessage}</span>
+						<span className='form__input-error'>{errors.password}</span>
 					</label>
 				</Form>
 			</section>

@@ -2,7 +2,7 @@ import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-export default function MoviesCardList({movies, onSave, onDelete, isSaved, url}) {
+export default function MoviesCardList({movies, onSave, onDelete, isSaved, url, errorMessage}) {
 	return (
 		<section className='movies-cards'>
 			<ul className='movies-cards__list'>
@@ -18,7 +18,7 @@ export default function MoviesCardList({movies, onSave, onDelete, isSaved, url})
 						/>
 					))
 				) : (
-					<p className='search-alert'>Ничего не найдено</p>
+					<p className='search-alert'>{errorMessage ? errorMessage : 'Ничего не найдено'}</p>
 				)}
 			</ul>
 		</section>

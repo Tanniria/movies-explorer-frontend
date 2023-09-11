@@ -1,28 +1,22 @@
-import React, {useState, useContext} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {CurrentUserContext} from '../../contexts/CurrentUserContext';
+import React, {useEffect} from 'react';
+import {useFormValidation} from '../../hooks/useValidation';
 import Form from '../Form/Form';
 import '../Form/Form.css';
 
-export default function Register({onRegister, errorMessage}) {
-	const {user} = useContext(CurrentUserContext);
-	const navigate = useNavigate();
-	if (user.isAuth) navigate('/');
-	const [registrationUserInfo, setRegistrationUserInfo] = useState({
-		name: '',
-		email: '',
-		password: '',
-	});
+export default function Register({onRegister, errorMessage, isSendRequest}) {
+	const {values, handleChange, errors, isValid, setValues} = useFormValidation();
+	useEffect(() => {
+		setValues({
+			name: '',
+			email: '',
+			password: '',
+		});
+	}, [setValues]);
 
-	function handleChange(evt) {
-		const {value, name} = evt.target;
-		setRegistrationUserInfo({...registrationUserInfo, [name]: value});
-	}
 	function handleSubmit(evt) {
 		evt.preventDefault();
-		onRegister(registrationUserInfo);
+		onRegister(values);
 	}
-
 	return (
 		<main>
 			<section className='register'>
@@ -32,7 +26,10 @@ export default function Register({onRegister, errorMessage}) {
 					linkText='Уже зарегистрированы?'
 					link='Войти'
 					route='/signin'
-					onSubmit={handleSubmit}>
+					onSubmit={handleSubmit}
+					errorMessage={errorMessage}
+					isValid={isValid}
+					isSendRequest={isSendRequest}>
 					<label className='form__wrapper'>
 						Имя
 						<input
@@ -43,10 +40,10 @@ export default function Register({onRegister, errorMessage}) {
 							minLength='2'
 							maxLength='40'
 							required
-							onChange={handleChange}
-							value={registrationUserInfo.name}
+							onChange={(e) => handleChange(e)}
+							value={values.name ? values.name : ''}
 						/>
-						<span className='form__input-error'></span>
+						{values.name && <span className='form__input-error'>{errors.name}</span>}
 					</label>
 					<label className='form__wrapper'>
 						E-mail
@@ -56,10 +53,10 @@ export default function Register({onRegister, errorMessage}) {
 							type='email'
 							placeholder='Ваш e-mail'
 							required
-							onChange={handleChange}
-							value={registrationUserInfo.email}
+							onChange={(e) => handleChange(e)}
+							value={values.email ? values.email : ''}
 						/>
-						<span className='form__input-error'>{errorMessage}</span>
+						{values.email && <span className='form__input-error'>{errors.email}</span>}
 					</label>
 					<label className='form__wrapper'>
 						Пароль
@@ -71,10 +68,10 @@ export default function Register({onRegister, errorMessage}) {
 							minLength='8'
 							maxLength='40'
 							required
-							onChange={handleChange}
-							value={registrationUserInfo.password}
+							onChange={(e) => handleChange(e)}
+							value={values.password ? values.password : ''}
 						/>
-						<span className='form__input-error'></span>
+						{values.password && <span className='form__input-error'>{errors.password}</span>}
 					</label>
 				</Form>
 			</section>

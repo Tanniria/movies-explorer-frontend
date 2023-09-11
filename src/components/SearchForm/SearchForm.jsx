@@ -24,6 +24,12 @@ export default function SearchForm({data, setMovies, url}) {
 		}
 	}, [values]);
 
+	useEffect(() => {
+		if (url === 'savedMovies') {
+			handleReset();
+		}
+	}, [url]);
+
 	const filterAndSearch = () => {
 		const obj = JSON.parse(localStorage.getItem(url));
 		let result;
@@ -85,8 +91,8 @@ export default function SearchForm({data, setMovies, url}) {
 	const handleReset = () => {
 		let result;
 		const {movies, ...store} = data;
-		setMovies({...data, query: ''});
-		result = {...store, query: ''};
+		setMovies({...data, query: '', isChecked: false});
+		result = {...store, query: '', isChecked: false};
 		setValues('');
 		localStorage.setItem(url, JSON.stringify(result));
 		filterAndSearch();
@@ -126,4 +132,4 @@ export default function SearchForm({data, setMovies, url}) {
 			<div className='search-form__border'></div>
 		</section>
 	);
-};
+}

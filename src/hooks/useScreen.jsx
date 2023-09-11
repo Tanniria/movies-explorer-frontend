@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 export const useScreen = () => {
 	const [width, setWidth] = useState(window.innerWidth);
@@ -6,7 +6,7 @@ export const useScreen = () => {
 		quantityMovies: 12,
 		moviesToAdd: 6,
 	});
-	useEffect(() => {
+	useCallback(() => {
 		const screenResize = (e) => {
 			setWidth(e.target.innerWidth);
 		};

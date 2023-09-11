@@ -4,8 +4,8 @@ import {useFormValidation} from '../../hooks/useValidation';
 import HeaderMovies from '../Header/HeaderMovies/HeaderMovies';
 import './Profile.css';
 
-export default function Profile({logOut, onEditUser}) {
-	const {user} = useContext(CurrentUserContext);
+export default function Profile({logOut, onEditUser, errorMessage}) {
+	const {user, setUser} = useContext(CurrentUserContext);
 	const {values, handleChange, errors, isValid, setValues, resetForm} = useFormValidation();
 	const [isInputDisabled, setIsInputDisables] = useState(true);
 	const [isSuccess, setIsSuccess] = useState();
@@ -19,13 +19,17 @@ export default function Profile({logOut, onEditUser}) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		onEditUser({
-			name: values.name ? values.name : name,
-			email: values.email ? values.email : email,
-		});
+		if (values.name !== name || values.email !== email) {
+			onEditUser({
+				name: values.name ? values.name : name,
+				email: values.email ? values.email : email,
+			});
+			resetForm();
+		} else {
+			setUser({...user.currentUser, isEditUserInfo: 'Не оригинально'});
+		}
 		setIsInputDisables(true);
 		setIsSuccess(false);
-		resetForm();
 	};
 
 	const handleEdit = () => {
@@ -71,7 +75,6 @@ export default function Profile({logOut, onEditUser}) {
 								required
 							/>
 						</label>
-						<span className='profile__input_error'>{errors.email}</span>
 						<p className='profile__input_success'>{user.isEditUserInfo}</p>
 						{isSuccess ? (
 							<button

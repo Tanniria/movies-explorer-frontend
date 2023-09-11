@@ -4,8 +4,8 @@ import HeaderMovies from '../Header/HeaderMovies/HeaderMovies';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
-import Preloader from '../Preloader/Preloader';
 import {addMovie, deleteMovie, getAllMovies, getSavedMovies} from '../../utils/MoviesApi';
+import Preloader from '../Preloader/Preloader';
 import {useScreen} from '../../hooks/useScreen';
 import './Movies.css';
 
@@ -38,8 +38,8 @@ export default function Movies() {
 	const {allMovies, savedMovies} = moviesState;
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [url, setUrl] = useState('');
-
 	const [moviesList, handleAddBtn] = useScreen();
+	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
 		location.pathname === '/saved-movies' ? setUrl('savedMovies') : setUrl('allMovies');
@@ -73,7 +73,6 @@ export default function Movies() {
 					},
 					savedMovies: {...prev.savedMovies, movies: savedMoviesData},
 				}));
-
 				if (!localStorage.getItem('allMovies')) {
 					const {movies, ...allResult} = allMovies;
 					localStorage.setItem('allMovies', JSON.stringify(allResult));
@@ -84,14 +83,13 @@ export default function Movies() {
 				}
 				setIsLoaded(true);
 			} catch (err) {
-				return console.log(err);
+				return setErrorMessage(err);
 			}
 		};
 		getMovies();
 	}, []);
 
 	const handleSaveMovies = (movie) => {
-		console.log(savedMovies.movies);
 		if (!savedMovies.movies.includes(movie)) {
 			addMovie(movie)
 				.then((item) => {
@@ -103,7 +101,7 @@ export default function Movies() {
 						},
 					}));
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => setErrorMessage(err));
 			console.log(`Фильм ${movie.nameRU || movie.nameEN} сохранён`);
 		} else {
 			console.log('Фильм уже сохранён');
@@ -129,8 +127,9 @@ export default function Movies() {
 				}));
 				console.log(`Фильм ${movie.nameRU || movie.nameEN} удалён`);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => setErrorMessage(err));
 	};
+
 	return (
 		<>
 			<HeaderMovies />
@@ -147,20 +146,29 @@ export default function Movies() {
 						onDelete={handleRemoveMovie}
 						isSaved={handleCheckSave}
 						url={url}
+						errorMessage={errorMessage}
 					/>
 				) : (
 					<Preloader />
 				)}
-				{moviesList.quantityMovies <= movies.movies.length && (
-					<button
-						className='movies-button'
-						type='button'
-						onClick={handleAddBtn}>
-						Ещё
-					</button>
-				)}
+				{filterMode
+					? moviesList.quantityMovies < movies.searchedMovies.length && (
+							<button
+								className='movies-button'
+								type='button'
+								onClick={handleAddBtn}>
+								Ещё
+							</button>
+					  )
+					: moviesList.quantityMovies < movies.movies.length && (
+							<button
+								className='movies-button'
+								type='button'
+								onClick={handleAddBtn}>
+								Ещё
+							</button>
+					  )}
 			</main>
-
 			<Footer />
 		</>
 	);

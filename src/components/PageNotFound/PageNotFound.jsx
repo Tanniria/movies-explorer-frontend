@@ -1,21 +1,18 @@
-import React, {useEffect, useContext} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 import './PageNotFound.css';
 
 export default function PageNotFound() {
+	const [isLoaded, setIsLoaded] = useState(false);
 	const navigate = useNavigate();
-	const {user} = useContext(CurrentUserContext);
 
-	useEffect(() => {
-		if (!user.isAuth && user.isTokenChecked) navigate('/');
-	}, [navigate, user.isAuth, user.isTokenChecked]);
+	setTimeout(() => {
+		setIsLoaded(true);
+	}, 1000);
 
 	return (
 		<main>
-			{!user.isAuth ? (
-				''
-			) : (
+			{isLoaded && (
 				<section className='pageNotFound'>
 					<div className='pageNotFound__container'>
 						<div className='pageNotFound__text'>

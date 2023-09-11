@@ -20,6 +20,7 @@ export default function App() {
 		isTokenChecked: false,
 	});
 	const [errorMessage, setErrorMessage] = useState('');
+	const [isSendRequest, setSendRequest] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -46,10 +47,10 @@ export default function App() {
 							currentUser: data,
 							isTokenChecked: false,
 						}));
+					} else {
 					}
 				});
 			} catch (error) {
-				console.log(error);
 				setUser((prev) => ({
 					...prev,
 					isAuth: false,
@@ -59,15 +60,15 @@ export default function App() {
 			}
 		};
 		tokenCheck();
-	}, [user.isAuth, navigate]);
+	}, [user.isTokenChecked, navigate]);
 
 	const handleRegistration = ({name, email, password}) => {
+		setSendRequest(true);
 		register(name, email, password)
 			.then(() => {
 				handleLogin({email, password});
 			})
 			.catch((error) => {
-				console.log(error);
 				if (error === 'Что-то пошло не так: 500') {
 					setErrorMessage(RES_ERRORS.SERVER_500);
 				}
@@ -79,9 +80,11 @@ export default function App() {
 			})
 			.finally(() => {
 				setTimeout(() => setErrorMessage(''), 3000);
+				setTimeout(() => setSendRequest(false), 500);
 			});
 	};
 	const handleLogin = ({email, password}) => {
+		setSendRequest(true);
 		login(email, password)
 			.then((res) => {
 				localStorage.setItem('token', res.token);
@@ -90,12 +93,8 @@ export default function App() {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
 				if (error === 'Что-то пошло не так: 500') {
 					setErrorMessage(RES_ERRORS.SERVER_500);
-				}
-				if (error === 'Что-то пошло не так: 401') {
-					setErrorMessage(RES_ERRORS.AUTHORIZATION_401);
 				} else {
 					setErrorMessage(RES_ERRORS.AUTHORIZATION_DEFAULT);
 				}
@@ -104,6 +103,7 @@ export default function App() {
 			})
 			.finally(() => {
 				setTimeout(() => setErrorMessage(''), 3000);
+				setTimeout(() => setSendRequest(false), 500);
 			});
 	};
 
@@ -119,7 +119,6 @@ export default function App() {
 				setTimeout(() => setUser((prev) => ({...prev, isEditUserInfo: ''})), 2500);
 			});
 		} catch (error) {
-			console.log(error);
 			if (error === 'Что-то пошло не так: 409') {
 				setUser({...user, currentUser: data, isEditUserInfo: RES_ERRORS.UPDATE_PROFILE});
 			} else {
@@ -142,7 +141,7 @@ export default function App() {
 	};
 
 	return (
-		<CurrentUserContext.Provider value={{user}}>
+		<CurrentUserContext.Provider value={{user, setUser}}>
 			<div className='page'>
 				<Routes>
 					<Route
@@ -155,6 +154,7 @@ export default function App() {
 							<Register
 								onRegister={handleRegistration}
 								errorMessage={errorMessage}
+								isSendRequest={isSendRequest}
 							/>
 						}
 					/>
@@ -164,6 +164,7 @@ export default function App() {
 							<Login
 								onLogin={handleLogin}
 								errorMessage={errorMessage}
+								isSendRequest={isSendRequest}
 							/>
 						}
 					/>
@@ -175,6 +176,7 @@ export default function App() {
 									<Profile
 										onEditUser={handleUserEdit}
 										logOut={logOut}
+										isSendRequest={isSendRequest}
 									/>
 								}
 							/>

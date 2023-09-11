@@ -4,8 +4,7 @@ export const RES_ERRORS = {
 	REGISTRATION_409: 'Пользователь с таким email уже существует',
 	REGISTRATION_DEFAULT: 'Переданы некорректные данные',
 
-	AUTHORIZATION_401: 'Вы ввели неправильный email или пароль',
-	AUTHORIZATION_DEFAULT: 'Что-то пошло не так...',
+	AUTHORIZATION_DEFAULT: 'Вы ввели неправильный email или пароль.',
 
 	UPDATE_PROFILE: 'Пользователь с таким email уже существует',
 	UPDATE_DEFAULT_400: 'При обновлении профиля произошла ошибка',
