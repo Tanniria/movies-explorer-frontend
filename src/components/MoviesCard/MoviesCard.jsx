@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom';
 import {timeConverter} from '../../utils/utils';
 import './MoviesCard.css';
 
@@ -14,22 +15,21 @@ export default function MoviesCard({movie, onSave, onDelete, isSaved, url}) {
 
 	return (
 		<li className='movie-card'>
-			<a
-				href={movie.trailerLink}
-				target='_blank'
-				rel='noreferrer'
-				className='movies-cards__link'>
+			<Link
+				to={movie.trailerLink}
+				className='movie-card__link'
+				target='_blank'>
 				<img
 					className='movie-card__image'
 					src={movie && (url === 'savedMovies' ? `${movie?.image}` : `https://api.nomoreparties.co/${movie?.image.url}`)}
 					alt='постер к фильму'
 				/>
-			</a>
+			</Link>
 			{url === 'allMovies' && (
 				<button
 					className={`movie-card__button movie-card__button_type_save ${isSavedMovie ? 'movie-card__button movie-card__button_type_saved' : ''}`}
 					type='button'
-					onClick={() => handleSave(movie)}>
+					onClick={!isSavedMovie ? () => handleSave(movie) : () => onDelete(movie)}>
 					{isSavedMovie ? '' : 'Сохранить'}
 				</button>
 			)}

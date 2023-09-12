@@ -39,17 +39,19 @@ export default function App() {
 					localStorage.removeItem('savedMovies');
 					return;
 				}
-				await getUser().then((data) => {
-					if (data) {
-						setUser((prev) => ({
-							...prev,
-							isAuth: true,
-							currentUser: data,
-							isTokenChecked: false,
-						}));
-					} else {
-					}
-				});
+				if (!user.isAuth) {
+					await getUser().then((data) => {
+						if (data) {
+							setUser((prev) => ({
+								...prev,
+								isAuth: true,
+								currentUser: data,
+								isTokenChecked: false,
+							}));
+						} else {
+						}
+					});
+				}
 			} catch (error) {
 				setUser((prev) => ({
 					...prev,

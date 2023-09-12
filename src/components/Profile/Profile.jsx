@@ -5,10 +5,11 @@ import HeaderMovies from '../Header/HeaderMovies/HeaderMovies';
 import './Profile.css';
 
 export default function Profile({logOut, onEditUser, errorMessage}) {
-	const {user, setUser} = useContext(CurrentUserContext);
+	const {user} = useContext(CurrentUserContext);
 	const {values, handleChange, errors, isValid, setValues, resetForm} = useFormValidation();
 	const [isInputDisabled, setIsInputDisables] = useState(true);
 	const [isSuccess, setIsSuccess] = useState();
+	const [isEqual, setIsEqual] = useState(true);
 	const {name, email} = user.currentUser;
 	useEffect(() => {
 		setValues({
@@ -17,17 +18,23 @@ export default function Profile({logOut, onEditUser, errorMessage}) {
 		});
 	}, [email, name, setValues]);
 
+	useEffect(() => {
+		if (name === values.name || email === values.email) {
+			setIsEqual(true);
+		}
+		if (name !== values.name || email !== values.email) {
+			setIsEqual(false);
+		}
+	}, [name, email, values.email, values.name, values]);
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (values.name !== name || values.email !== email) {
-			onEditUser({
-				name: values.name ? values.name : name,
-				email: values.email ? values.email : email,
-			});
-			resetForm();
-		} else {
-			setUser({...user.currentUser, isEditUserInfo: 'Не оригинально'});
-		}
+		onEditUser({
+			name: values.name ? values.name : name,
+			email: values.email ? values.email : email,
+		});
+		resetForm();
+
 		setIsInputDisables(true);
 		setIsSuccess(false);
 	};
@@ -75,13 +82,13 @@ export default function Profile({logOut, onEditUser, errorMessage}) {
 								required
 							/>
 						</label>
-						<p className='profile__input_success'>{user.isEditUserInfo}</p>
+						<p className='profile__input_success'>{errorMessage}</p>
 						{isSuccess ? (
 							<button
 								className='profile__button profile__button_edit'
 								type='button'
 								onClick={handleSubmit}
-								disabled={!isValid}>
+								disabled={!isValid || isEqual}>
 								Сохранить
 							</button>
 						) : (
