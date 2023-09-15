@@ -33,12 +33,14 @@
     font-weight: 400;
     font-style: normal;
     line-height: 20px;
-    color: rgb(160, 160, 160);
+    color: rgb(0, 0, 0);
     background: rgb(249, 249, 249);
     border: none;
     outline: none;
 }
-
+.search-form__input::placeholder {
+    color: rgb(160, 160, 160);
+}
 .search-form__button {
     max-height: 34px;
     padding: 8px 10.35px;
@@ -57,7 +59,18 @@
 .search-form__button:hover {
     opacity: 0.8;
 }
-
+.search-form__error {
+    margin: 0;
+    padding: 0;
+    max-width: 396px;
+    color: #FF4062;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: normal;
+    position: absolute;
+    top: 200px;
+    left: 30px;
+}
 .search-form__border {
     max-width: 1140px;
     margin: 0 auto;
@@ -75,6 +88,10 @@
 
     .search-form__button {
         margin-right: 23px;
+    }
+    .search-form__error {
+        top: 210px;
+        left: 55px;
     }
 }
 
@@ -114,5 +131,9 @@
 
     .search-form__wrapper:focus-within {
         outline: none;
+    }
+    .search-form__error {
+        top: 53px;
+        left: 17px;
     }
 }
