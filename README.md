@@ -4,4 +4,3 @@
 
 Пул-реквест (https://github.com/Tanniria/movies-explorer-frontend/pull/2)
 
-Сервер (https://movies-explorer.nomoredomains.xyz/)
